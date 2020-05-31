@@ -1,0 +1,115 @@
+/* Put your css in here */
+
+.user-row {
+  padding-left: 18px;
+}
+
+.user {
+  cursor: pointer;
+}
+
+.room {
+  cursor: pointer;
+}
+
+.user:hover:hover {
+  background-color: #212529;
+}
+
+.room:hover {
+  background-color: #212529;
+}
+
+.user.selected {
+  background-color:grey;
+}
+
+.you{
+  padding-top:5px;
+  color: white;
+  padding-left: 18px;
+  height:45px;
+}
+
+.right{
+  text-align: right;
+}
+
+.left{
+  text-align: left;
+}
+
+.dropdown{
+  padding-top:10px;
+  padding-left: 16px;
+}
+
+.unavailable {
+  background:left no-repeat url('images/grey.png');
+}
+
+.available {
+  background:left no-repeat url('images/green.png');
+}
+
+.dnd {
+  background:left no-repeat url('images/red.png');
+}
+
+.away {
+  background:left no-repeat url('images/yellow.png');
+}
+
+.room.selected {
+  background-color:grey;
+}
+
+.newmsg {
+  background:right no-repeat url('images/new_message.png');
+}
+
+.nopadding{
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+.form-signin .checkbox {
+  font-weight: 400;
+}
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  line-height: 60px;
+}
+.navbar {
+  height: 50px;
+  line-height: 50px;
+}
