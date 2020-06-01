@@ -21,10 +21,10 @@
   <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4 shadow">
     <a class="navbar-brand" onclick="location.reload();" href="#">XMPP Chat</a>
   </nav>
-  <div class="container" id='main' style="display:none"> 
+  <div class="container" id='main' style="display:none">
     <div class="row shadow-lg">
       <div class="col-sm-4 nopadding bg-dark rounded-left text-white">
-        
+
         <div class="dropdown" style="height:53px;">
           <div class ="you h3 font-weight-bold" id="user" data-toggle="dropdown"></div>
           <div class="dropdown-menu pl-2">
@@ -40,7 +40,9 @@
         <div class="pl-4" id='rooms'></div>
       </div>
       <div class="col-sm-8 bg-light nopadding rounded-right" style="height: 817px;">
-        <div id='who' class="font-weight-bold h3 text-center pt-2 bg-dark rounded-right schadow-sm text-white" style="height: 53px;"></div>
+        <div id='who' class="font-weight-bold h3 text-center pt-2 bg-dark rounded-right schadow-sm text-white" style="height: 53px;">
+          <div class="float-right" id="btnLogOut">Log out</div>
+        </div>
         <div id='messages' class="mt-1 mb-1 pl-3 pr-3 " style="overflow-y:auto; height:686px;"></div>
         <textarea class="mb-3 ml-3 mr-3 rounded bg-light border-dark shadow-sm" style="height: 50px; width:728px;" id='msg'></textarea>
       </div>
@@ -50,9 +52,11 @@
     <div class="form-signin bg-light rounded">
       <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
       <label for="jid" class="sr-only">Username</label>
-      <input type="text" id="jid" class="form-control">
+      <input type="text" id="jid" class="form-control" placeholder="Enter you email">
       <label for="pass" class="sr-only">Password</label>
-      <input type="password" id="pass" class="form-control">
+      <input type="password" id="pass" class="form-control" placeholder="Enter you password">
+      <label for="checkbox"> Remember my password</label>
+      <input type="checkbox" id="checkbox">
       <input class="btn btn-lg btn-primary btn-block" id='connect' value='connect' type='button'/>
       <p class="mt-5 mb-3 text-muted">&copy; 2017-2019</p>
     </div>
@@ -60,7 +64,7 @@
   <footer class="footer bg-dark text-white fixed-bottom mt-4">
       <div class="container">
         <p class="text-center">Chat</p>
-      </div>   
+      </div>
   </footer>
 </body>
 </html>

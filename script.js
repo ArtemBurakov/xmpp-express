@@ -10,27 +10,25 @@ var sItemType = null;
 messages = [];
 
 function log(msg) {
-  //$('#log').append('<div></div>').append(document.createTextNode(msg));
   console.log(msg);
 }
 
 function onConnect(status) {
-
-  cUser = $('#jid').get(0).value;
-  $('#user').html(cUser);
+	cUser = $('#jid').get(0).value;
+	$('#user').html(cUser);
 
   if (status == Strophe.Status.CONNECTING) {
-    log('Strophe is connecting.');
+  	log('Strophe is connecting.');
   } else if (status == Strophe.Status.CONNFAIL) {
-    log('Strophe failed to connect.');
+		log('Strophe failed to connect.');
     updateConnButton(false);
   } else if (status == Strophe.Status.DISCONNECTING) {
     log('Strophe is disconnecting.');
   } else if (status == Strophe.Status.DISCONNECTED) {
-    log('Strophe is disconnected.');
+		log('Strophe is disconnected.');
     updateConnButton(false);
   } else if (status == Strophe.Status.CONNECTED) {
-    log('Strophe is connected.');
+		log('Strophe is connected.');
     getRoster();
     updateConnButton(true);
     // set presence
@@ -41,22 +39,20 @@ function onConnect(status) {
     connection.addHandler(onPresence, null, "presence");
     //listRooms();
     connection.muc.init(connection);
-
   }
 }
 
-function getHistory(){
+function getHistory() {
   log('getHistory');
 
   var query = {"with": sItem, "before": '', "max":'', onMessage: onHistoryMessage};
   console.log(query);
 
-  if(messages){
+  if (messages) {
     var a = messages[sItem];
-
-    if(a != null){
-      for (var i = 0; i < a.length; i++){
-        var b = a[i];
+    if (a != null) {
+      for (var i = 0; i < a.length; i++) {
+      	var b = a[i];
         var message = b.body;
         var from = b.from;
         var time = b.sentDate;
@@ -70,19 +66,21 @@ function getHistory(){
   connection.mam.query(cUser, query);
 }
 
-function printMessages(message, from, time){
+function printMessages(message, from, time) {
   log('printMessages');
-  if(from == cUser){
-    $('#messages').append('<div class="left"><em>'+time+'</em><br><b>'+from+'</b><br> '+ message+'<br><br></div>');
-  }else{
+
+  if (from == cUser) {
+  	$('#messages').append('<div class="left"><em>'+time+'</em><br><b>'+from+'</b><br> '+ message+'<br><br></div>');
+  } else {
     $('#messages').append('<div class="right"><em>'+time+'</em><br><b>'+from+'</b><br> '+ message+'<br><br></div>');
   }
   var objDiv = document.getElementById("messages");
   objDiv.scrollTop = objDiv.scrollHeight;
 }
 
-function onHistoryMessage(message){
+function onHistoryMessage(message) {
   log('onHistoryMessage');
+
 	try {
     var id = message.querySelector('result').getAttribute('id');
     var fwd = message.querySelector('forwarded');
@@ -104,37 +102,33 @@ function onHistoryMessage(message){
     var cMsg = {from: msg_data.from, to: msg_data.to, body: msg_data.message, sentDate: msg_data.timestamp};
     var index;
 
-    if (msg_data.from == cUser){
+    if (msg_data.from == cUser) {
       index = msg_data.to;
-    }
-    else{
+    } else {
       index = msg_data.from;
     }
 
-    if (!messages[index]){
+    if (!messages[index]) {
       messages[index] = [];
     }
-    messages[index].push(cMsg);
+		messages[index].push(cMsg);
+
     log(messages);
 
-    if (msg_data.from == sItem || msg_data.from == cUser){
-
-      if(msg_data.type == "chat"){
-
-        if(msg_data.from == cUser){
+    if (msg_data.from == sItem || msg_data.from == cUser) {
+      if (msg_data.type == "chat") {
+        if (msg_data.from == cUser) {
           $('#messages').append('<div class="left"><em>'+time+'</em><br><b>'+msg_data.from+'</b><br> '+ msg_data.message+'<br><br></div>');
-        }else{
+        } else {
           $('#messages').append('<div class="right"><em>'+time+'</em><br><b>'+msg_data.from+'</b><br> '+ msg_data.message+'<br><br></div>');
         }
       }
 
-      if(msg_data.type == "groupchat"){
-
-        if(msg_data.from != sItem){
-        }
-        if(msg_data.fromResource == cUser){
+      if (msg_data.type == "groupchat") {
+        if (msg_data.from != sItem) {}
+        if (msg_data.fromResource == cUser) {
           $('#messages').append('<div class="left"><em>'+time+'</em><br><b>'+ msg_data.fromResource+'</b><br> '+ msg_data.message+'<br><br></div>');
-        }else{
+        } else {
           $('#messages').append('<div class="right"><em>'+time+'</em><br><b>'+msg_data.fromResource+'</b><br> '+ msg_data.message+'<br><br></div>');
         }
       }
@@ -142,22 +136,23 @@ function onHistoryMessage(message){
     var objDiv = document.getElementById("messages");
     objDiv.scrollTop = objDiv.scrollHeight;
   }
-  catch(err){
-      if(typeof(err) == 'TypeError'){
-          try {
-              console.log(err.stack)
-          } catch(err2){
-              console.log(err,err2);
-          }
+  catch(err) {
+    if (typeof(err) == 'TypeError') {
+      try {
+        console.log(err.stack)
+      } catch(err2) {
+        console.log(err,err2);
       }
+    }
   }
   return true;
 }
 
 function onMessage(msg) {
   log('onMessage');
+
   var from = Strophe.getBareJidFromJid(msg.getAttribute('from'));
-  if (from){
+  if (from) {
     var to = msg.getAttribute('to');
     var fromResource = Strophe.getResourceFromJid(msg.getAttribute('from'));
     var type = msg.getAttribute('type');
@@ -166,20 +161,15 @@ function onMessage(msg) {
     var body = elems[0];
 
     if ((type == "chat" || type == "groupchat") && elems.length > 0) {
-
-      if (from == sItem){
-
-        if(from == cUser || fromResource == cUser){
+      if (from == sItem) {
+        if (from == cUser || fromResource == cUser) {
           $('#messages').append('<div class="left"><em>'+time+'</em><br><b>'+(type == "chat" ? from : fromResource)+'</b><br> '+ Strophe.getText(body)+'<br><br></div>');
-        }
-        else{
+        } else {
           $('#messages').append('<div class="right"><em>'+time+'</em><br><b>'+(type == "chat" ? from : fromResource)+'</b><br> '+ Strophe.getText(body)+'<br><br></div>');
         }
         var objDiv = document.getElementById("messages");
         objDiv.scrollTop = objDiv.scrollHeight;
-      }
-
-      else{
+      } else {
         $('div[jid="'+ from +'"]').addClass("newmsg");
       }
     }
@@ -188,13 +178,15 @@ function onMessage(msg) {
 }
 
 function setStatus(s) {
-  log('setStatus: ' + s);
+	log('setStatus: ' + s);
+
   var status = $pres().c('show').t(s);
   connection.send(status);
 }
 
 function subscribePresence(jid) {
-  log('subscribePresence: ' + jid);
+	log('subscribePresence: ' + jid);
+
   connection.send($pres({
     to: jid,
     type: "subscribe"
@@ -202,7 +194,8 @@ function subscribePresence(jid) {
 }
 
 function getPresence(jid) {
-  log('getPresence: ' + jid);
+	log('getPresence: ' + jid);
+
   var check = $pres({
     type: 'probe',
     to: jid
@@ -211,7 +204,8 @@ function getPresence(jid) {
 }
 
 function getRoster() {
-  log('getRoster');
+	log('getRoster');
+
   var iq = $iq({
     type: 'get'
   }).c('query', {
@@ -220,13 +214,17 @@ function getRoster() {
   connection.sendIQ(iq, rosterCallback);
 }
 
+function roster_cb() {}
+
 function rosterCallback(iq) {
-  log('rosterCallback:');
+	log('rosterCallback:');
+
   $(iq).find('item').each(function() {
     var jid = $(this).attr('jid'); // The jabber_id of your contact
     // You can probably put them in a unordered list and and use their jids as ids.
     log('	>' + jid);
-    log('	>' + $(this).attr('name'));
+		log('	>' + $(this).attr('name'));
+
     var contact = {};
     contact.jid = $(this).attr('jid');
     contact.name = $(this).attr('name');
@@ -234,21 +232,19 @@ function rosterCallback(iq) {
   });
 }
 
-function addContact(contact){
-
+function addContact(contact) {
   var result = /@conference\./.test(contact.jid);
 
-  if(result){
+  if (result) {
     $('#rooms').append('<div onClick="selectRoom(\''+contact.jid+'\',\''+contact.name+'\', this);" jid="'+contact.jid+'" class="room"><span class="name">'+contact.name+'</span></div>');
     connection.muc.join(contact.jid, cUser, room_msg_handler, room_pres_handler, roster_cb, null, { maxstanzas: 0});
-  }else{
+  } else {
     $('#users').append('<div class="user-row unavailable"><div class="user" jid="'+contact.jid+'" onClick="selectUser(\''+contact.jid+'\',\''+contact.name+'\', this);"><span class="name">'+contact.name+'</span></div></div>');
     getPresence(contact.jid);
   }
 }
 
-function selectUser(jid, name, dElem){
-
+function selectUser(jid, name, dElem) {
   sItemType = 'user';
   sItem = jid;
   sItemName = name;
@@ -261,8 +257,7 @@ function selectUser(jid, name, dElem){
   getHistory();
 }
 
-function selectRoom(jid, name, dElem){
-
+function selectRoom(jid, name, dElem) {
   sItemType = 'room';
   sItem = jid;
   sItemName = name;
@@ -275,13 +270,14 @@ function selectRoom(jid, name, dElem){
   getHistory();
 }
 
-function sendMessage(){
+function sendMessage() {
   log('sendMessage');
+
   var msg = $('#msg').val();
   $('#msg').val("");
   var time = moment().format('MMMM Do YYYY, hh:mm:ss');
 
-  if (sItemType == 'user'){
+  if (sItemType == 'user') {
     var m = $msg({
       to: sItem,
       from: cUser,
@@ -289,8 +285,7 @@ function sendMessage(){
     }).c("body").t(msg);
     connection.send(m);
     $('#messages').append('<div class="left"><em>'+time+'</em><br><b>'+cUser+'</b><br> '+ msg+'<br><br></div>');
-  }
-  else{
+  } else {
     connection.muc.message(sItem, null, msg);
   }
   var objDiv = document.getElementById("messages");
@@ -299,7 +294,8 @@ function sendMessage(){
 
 function onSubscriptionRequest(stanza) {
   if (stanza.getAttribute("type") == "subscribe") {
-    var from = $(stanza).attr('from');
+		var from = $(stanza).attr('from');
+
     log('onSubscriptionRequest: from=' + from);
     // Send a 'subscribed' notification back to accept the incoming
     // subscription request
@@ -311,45 +307,39 @@ function onSubscriptionRequest(stanza) {
   return true;
 }
 
-function roster_cb(){
-  
-}
-
 function onPresence(presence) {
-  
   log('onPresence');
+
   var from = $(presence).attr('from'); // the jabber_id of the contact
   var presence_type = $(presence).attr('type'); // available, unavailable
   var show = $(presence).find("show").text(); // away, dnd, etc.
-  from = Strophe.getBareJidFromJid(from);
-  log('onPresence:'+from);
+	from = Strophe.getBareJidFromJid(from);
+
+	log('onPresence:'+from);
+
   var result = /@conference\./.test(from);
 
   //if user
-  if(!result){
-    if(show =='away'){
+  if (!result) {
+    if (show =='away') {
       var presence = 'away';
-    }
-    else if(show == 'dnd'){
+    } else if (show == 'dnd') {
       var presence = 'dnd';
-    }
-    else if (presence_type == 'unavailable'){
+    } else if (presence_type == 'unavailable') {
       var presence = 'unavailable';
-    }
-    else if (!presence_type){
+    } else if (!presence_type) {
       var presence = 'available';
     }
-    
     setPresence(from, presence);
   }
   return true;
 }
 
-function setPresence(from, presence){
-  if(from == cUser){
+function setPresence(from, presence) {
+  if (from == cUser) {
     $('#user').removeClass('unavailable').removeClass('available').removeClass('dnd').removeClass('away');
     $('#user').addClass(presence);
-  }else{
+  } else {
     $('div[jid="'+ from +'"]').parent().removeClass('unavailable').removeClass('available').removeClass('dnd').removeClass('away');
     $('div[jid="'+ from +'"]').parent().addClass(presence);
   }
@@ -357,10 +347,12 @@ function setPresence(from, presence){
 
 function listRooms() {
   connection.muc.listRooms(mydomain, function(msg) {
-    log("listRooms - success: ");
+		log("listRooms - success: ");
+
     $(msg).find('item').each(function() {
       var jid = $(this).attr('jid'),
-        name = $(this).attr('name');
+					name = $(this).attr('name');
+
       log('	>room: ' + name + ' (' + jid + ')');
     });
   }, function(err) {
@@ -369,7 +361,8 @@ function listRooms() {
 }
 
 function enterRoom(room) {
-  log("enterRoom: " + room);
+	log("enterRoom: " + room);
+
   connection.muc.init(connection);
   connection.muc.join(room, $('#jid').get(0).value, room_msg_handler, room_pres_handler);
   //connection.muc.setStatus(room, $('#jid').get(0).value, 'subscribed', 'chat');
@@ -391,15 +384,17 @@ function exitRoom(room) {
 }
 
 function register() {
-	var registerCallback = function (status) {
+	var registerCallback = function(status) {
 		if (status === Strophe.Status.REGISTER) {
 			log("registerCallback: REGISTER");
+
 			connection.register.fields.username = $('#reg_name').get(0).value;
 			connection.register.fields.password = $('#reg_pass').get(0).value;
 			console.log(connection.register.fields);
 			connection.register.submit();
 		} else if (status === Strophe.Status.REGISTERED) {
 			log("registerCallback: REGISTERED");
+
 			$('#jid').get(0).value = $('#reg_name').get(0).value + "@" + server;
 			$('#pass').get(0).value = $('#reg_pass').get(0).value;
 			connection.authenticate();
@@ -418,7 +413,7 @@ function register() {
 			// every other status a connection.connect would receive
 		}
 	};
-	
+
 	if (!connection) {
 		var url = BOSH_SERVICE;
 		connection = new Strophe.Connection(url);
@@ -437,33 +432,56 @@ function rawOutput(data) {
 }
 
 function updateConnButton(connected) {
-    var button = $('#connect').get(0);
-    if (connected) {
-      button.value = 'disconnect';
-    } else {
-      button.value = 'connect';
-    }
+  var button = $('#connect').get(0);
+  if (connected) {
+    button.value = 'disconnect';
+  } else {
+    button.value = 'connect';
+  }
 }
 
 $(document).ready(function() {
-  $('#jid').get(0).value = 'user1@'+server;
-  $('#pass').get(0).value = 'user1'
-  $('#connect').bind('click', function(){
-  	if (!connection) {
-  		var url = BOSH_SERVICE;
-  		connection = new Strophe.Connection(url);
-  		connection.rawInput = rawInput;
-      connection.rawOutput = rawOutput;
-  	}
+  if (!connection) {
+    var url = BOSH_SERVICE;
+    connection = new Strophe.Connection(url);
+    connection.rawInput = rawInput;
+    connection.rawOutput = rawOutput;
+  }
+
+  if (localStorage.getItem("remember") == 'true') {
+    $('#jid').get(0).value = localStorage.getItem("jid");
+    $('#pass').get(0).value = localStorage.getItem("password");
+    connection.connect($('#jid').get(0).value, $('#pass').get(0).value, onConnect);
+
+    $('#login').css('display','none');
+    $('#main').css('display','block');
+  }
+
+  $('#connect').bind('click', function() {
     var button = $('#connect').get(0);
-    if (button.value == 'connect'){
+    if (button.value == 'connect') {
       connection.connect($('#jid').get(0).value, $('#pass').get(0).value, onConnect);
+      if (localStorage.getItem("remember") == 'true') {
+        localStorage.setItem("jid", $('#jid').get(0).value);
+        localStorage.setItem("password", $('#pass').get(0).value);
+      }
       $('#login').css('display','none');
       $('#main').css('display','block');
     }
   });
-  
-	$("#btnRegister").bind('click', function () {
+
+  $('#checkbox').bind('click', function() {
+    localStorage.setItem("remember", $('#checkbox')[0].checked);
+  });
+
+  $('#btnLogOut').bind('click', function() {
+    localStorage.setItem("remember", false);
+    localStorage.removeItem("jid");
+    localStorage.removeItem("password");
+    window.location.reload();
+  });
+
+	$("#btnRegister").bind('click', function() {
 		register();
 	});
 
@@ -491,10 +509,10 @@ $(document).ready(function() {
     exitRoom($('#room').val());
   });
 
-  $('#msg').keypress(function(e){
-    if(e.keyCode === 13 && !e.shiftKey){
+  $('#msg').keypress(function(e) {
+    if (e.keyCode === 13 && !e.shiftKey) {
       sendMessage();
       return false;
-    } 
-  }); 
+    }
+  });
 });
