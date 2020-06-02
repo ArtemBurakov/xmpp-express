@@ -46,7 +46,6 @@ function getHistory() {
   log('getHistory');
 
   var query = {"with": sItem, "before": '', "max":'', onMessage: onHistoryMessage};
-  console.log(query);
 
   if (messages) {
     var a = messages[sItem];
@@ -111,9 +110,7 @@ function onHistoryMessage(message) {
     if (!messages[index]) {
       messages[index] = [];
     }
-		messages[index].push(cMsg);
-
-    log(messages);
+    messages[index].push(cMsg);
 
     if (msg_data.from == sItem || msg_data.from == cUser) {
       if (msg_data.type == "chat") {
@@ -448,10 +445,10 @@ $(document).ready(function() {
     connection.rawOutput = rawOutput;
   }
 
-  if (localStorage.getItem("remember") == 'true') {
-    $('#jid').get(0).value = localStorage.getItem("jid");
-    $('#pass').get(0).value = localStorage.getItem("password");
-    connection.connect($('#jid').get(0).value, $('#pass').get(0).value, onConnect);
+  if (localStorage.getItem('rememberMe') == 'true') {
+    $('#jid').get(0).value = localStorage.getItem('jid');
+    $('#pass').get(0).value = localStorage.getItem('password');
+    connection.connect(localStorage.getItem('jid'), localStorage.getItem('password'), onConnect);
 
     $('#login').css('display','none');
     $('#main').css('display','block');
@@ -459,25 +456,25 @@ $(document).ready(function() {
 
   $('#connect').bind('click', function() {
     var button = $('#connect').get(0);
-    if (button.value == 'connect') {
+
+    if (button.value == 'Connect') {
       connection.connect($('#jid').get(0).value, $('#pass').get(0).value, onConnect);
-      if (localStorage.getItem("remember") == 'true') {
-        localStorage.setItem("jid", $('#jid').get(0).value);
-        localStorage.setItem("password", $('#pass').get(0).value);
+
+      if ($('#checkbox').is(':checked')) {
+        localStorage.setItem('rememberMe', true);
+        localStorage.setItem('jid', $('#jid').get(0).value);
+        localStorage.setItem('password', $('#pass').get(0).value);
       }
+
       $('#login').css('display','none');
       $('#main').css('display','block');
     }
   });
 
-  $('#checkbox').bind('click', function() {
-    localStorage.setItem("remember", $('#checkbox')[0].checked);
-  });
-
   $('#btnLogOut').bind('click', function() {
-    localStorage.setItem("remember", false);
-    localStorage.removeItem("jid");
-    localStorage.removeItem("password");
+    localStorage.removeItem('rememberMe');
+    localStorage.removeItem('jid');
+    localStorage.removeItem('password');
     window.location.reload();
   });
 

@@ -60,6 +60,10 @@
   background:left no-repeat url('images/yellow.png');
 }
 
+.logOut {
+  background:left no-repeat url('images/logout.png');
+}
+
 .room.selected {
   background-color:grey;
 }
