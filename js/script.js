@@ -1,8 +1,8 @@
-var server = 'localhost';
-//var BOSH_SERVICE = 'http://127.0.0.1:7070/http-bind/';
-var BOSH_SERVICE = 'ws:/127.0.0.1:7070/ws/';
-var ROOM = 'prova@conference.' + server;
-var ROOM_SERVICE = 'conference.' + server;
+var server_host_name = 'localhost';
+//var BOSH_SERVICE = 'http://localhost:7070/http-bind/';
+var SOCKET_SERVICE = 'ws:/localhost:7070/ws/';
+var ROOM = 'prova@conference.' + server_host_name;
+var ROOM_SERVICE = 'conference.' + server_host_name;
 var connection = null;
 var cUser = null;
 var sItem = null;
@@ -392,7 +392,7 @@ function register() {
 		} else if (status === Strophe.Status.REGISTERED) {
 			log("registerCallback: REGISTERED");
 
-			$('#jid').get(0).value = $('#reg_name').get(0).value + "@" + server;
+			$('#jid').get(0).value = $('#reg_name').get(0).value + "@" + server_host_name;
 			$('#pass').get(0).value = $('#reg_pass').get(0).value;
 			connection.authenticate();
 		} else if (status === Strophe.Status.CONNECTED) {
@@ -412,12 +412,12 @@ function register() {
 	};
 
 	if (!connection) {
-		var url = BOSH_SERVICE;
+		var url = SOCKET_SERVICE;
 		connection = new Strophe.Connection(url);
 		connection.rawInput = rawInput;
 		connection.rawOutput = rawOutput;
 	}
-	connection.register.connect(server, registerCallback);
+	connection.register.connect(server_host_name, registerCallback);
 }
 
 function rawInput(data) {
@@ -439,7 +439,7 @@ function updateConnButton(connected) {
 
 $(document).ready(function() {
   if (!connection) {
-    var url = BOSH_SERVICE;
+    var url = SOCKET_SERVICE;
     connection = new Strophe.Connection(url);
     connection.rawInput = rawInput;
     connection.rawOutput = rawOutput;

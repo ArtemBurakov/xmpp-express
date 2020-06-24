@@ -1,67 +1,66 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-  <meta charset="utf-8" />
-  <title>Strophe.js CHAT Example</title>
-  <link rel="stylesheet" href="style.css" />
-  <script data-require="jquery" data-semver="2.1.4" src="https://code.jquery.com/jquery-2.1.4.js"></script>
-  <script src='strophe.js'></script>
-  <script src='strophe.muc.js'></script>
-  <script src='strophe.rsm.js'></script>
-  <script src='strophe.mam.js'></script>
-  <script src="script.js"></script>
-  <script src="moment.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-</head>
-<body >
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4 shadow">
-    <a class="navbar-brand" onclick="location.reload();" href="#">XMPP Chat</a>
-  </nav>
-  <div class="container" id='main' style="display:none">
-    <div class="row shadow-lg">
-      <div class="col-sm-4 nopadding bg-dark rounded-left text-white">
-        <div class="dropdown" style="height:53px;">
-          <div class ="you h3 font-weight-bold" id="user" data-toggle="dropdown"></div>
-          <div class="dropdown-menu pl-2">
-            <a class="dropdown-item available" onclick="setStatus('');">Online</a>
-            <a class="dropdown-item away" onclick="setStatus('away');">Away</a>
-            <a class="dropdown-item dnd" onclick="setStatus('dnd');">Dnd</a>
-            <a class="dropdown-item logOut" id="btnLogOut">Log out</a>
+  <head>
+    <meta charset="utf-8" />
+    <title>Strophe.js CHAT Example</title>
+    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script data-require="jquery" data-semver="2.1.4" src="https://code.jquery.com/jquery-2.1.4.js"></script>
+    <script src='js/strophe.js'></script>
+    <script src='js/strophe.muc.js'></script>
+    <script src='js/strophe.rsm.js'></script>
+    <script src='js/strophe.mam.js'></script>
+    <script src="js/script.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </head>
+  <body >
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4 shadow">
+      <a class="navbar-brand" onclick="location.reload();" href="#">XMPP Chat</a>
+    </nav>
+    <div class="container" id='main' style="display:none">
+      <div class="row shadow-lg">
+        <div class="col-sm-4 nopadding bg-dark rounded-left text-white">
+          <div class="dropdown" style="height:53px;">
+            <div class ="you h3 font-weight-bold" id="user" data-toggle="dropdown"></div>
+            <div class="dropdown-menu pl-2">
+              <a class="dropdown-item available" onclick="setStatus('');">Online</a>
+              <a class="dropdown-item away" onclick="setStatus('away');">Away</a>
+              <a class="dropdown-item dnd" onclick="setStatus('dnd');">Dnd</a>
+              <a class="dropdown-item logOut" id="btnLogOut">Log out</a>
+            </div>
           </div>
+          <div class="mt-2 mb-2 text-uppercase pl-3 pr-3">direct messages</div>
+          <div class="pl-4" id='users'></div>
+          <div class="mt-2 mb-2 text-uppercase pl-3 pr-3">rooms</div>
+          <div class="pl-4" id='rooms'></div>
         </div>
-        <div class="mt-2 mb-2 text-uppercase pl-3 pr-3">direct messages</div>
-        <div class="pl-4" id='users'></div>
-        <div class="mt-2 mb-2 text-uppercase pl-3 pr-3">rooms</div>
-        <div class="pl-4" id='rooms'></div>
-      </div>
-      <div class="col-sm-8 bg-light nopadding rounded-right" style="height: 817px;">
-        <div id='who' class="font-weight-bold h3 text-center pt-2 bg-dark rounded-right schadow-sm text-white" style="height: 53px;"></div>
-        <div id='messages' class="mt-1 mb-1 pl-3 pr-3 " style="overflow-y:auto; height:686px;"></div>
-        <textarea class="mb-3 ml-3 mr-3 rounded bg-light border-dark shadow-sm" style="height: 50px; width:728px;" id='msg'></textarea>
+        <div class="col-sm-8 bg-light nopadding rounded-right" style="height: 817px;">
+          <div id='who' class="font-weight-bold h3 text-center pt-2 bg-dark rounded-right schadow-sm text-white" style="height: 53px;"></div>
+          <div id='messages' class="mt-1 mb-1 pl-3 pr-3 " style="overflow-y:auto; height:686px;"></div>
+          <textarea class="mb-3 ml-3 mr-3 rounded bg-light border-dark shadow-sm" style="height: 50px; width:728px;" id='msg'></textarea>
+        </div>
       </div>
     </div>
-  </div>
-  <div id ='login' class="text-center" style="display:block">
-    <div class="form-signin bg-light rounded">
-      <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-      <label for="jid" class="sr-only">Username</label>
-      <input type="text" id="jid" class="form-control" placeholder="Enter you email">
-      <label for="pass" class="sr-only">Password</label>
-      <input type="password" id="pass" class="form-control" placeholder="Enter you password">
-      <label for="checkbox">Remember me</label>
-      <input style="vertical-align: middle" type="checkbox" id="checkbox">
-      <input class="btn btn-lg btn-primary btn-block" id='connect' value='Connect' type='button'/>
-      <p class="mt-5 mb-3 text-muted">&copy; 2017-2019</p>
-    </div>
-  </div>
-  <footer class="footer bg-dark text-white fixed-bottom mt-4">
-      <div class="container">
-        <p class="text-center">Chat</p>
+    <div id ='login' class="text-center" style="display:block">
+      <div class="form-signin bg-light rounded">
+        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+        <label for="jid" class="sr-only">Username</label>
+        <input type="text" id="jid" class="form-control" placeholder="Enter you email">
+        <label for="pass" class="sr-only">Password</label>
+        <input type="password" id="pass" class="form-control" placeholder="Enter you password">
+        <label for="checkbox">Remember me</label>
+        <input style="vertical-align: middle" type="checkbox" id="checkbox">
+        <input class="btn btn-lg btn-primary btn-block" id='connect' value='Connect' type='button'/>
+        <p class="mt-5 mb-3 text-muted">&copy; 2017-2019</p>
       </div>
-  </footer>
-</body>
+    </div>
+    <footer class="footer bg-dark text-white fixed-bottom mt-4">
+        <div class="container">
+          <p class="text-center">Chat</p>
+        </div>
+    </footer>
+  </body>
 </html>
